@@ -1,0 +1,32 @@
+# System files
+.DS_Store
+
+# R history
+.Rhistory
+.Rapp.history
+
+# R Projects and user data
+.Ruserdata
+.Rproj.user/
+
+# Rplots
+Rplots.pdf
+
+# Icon files
+Icon
+Icon\r
+Icon\r\r
+
+# VSCode
+**/.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# Unused local scripts
+grafs-no-aprobadas.R
