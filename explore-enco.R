@@ -201,25 +201,30 @@ plot_meanline <- function(colname, title, compara){
  plot <- ggplot(db %>% filter(get(colname) != "No sabe",
                               var_stat %in% wrapvars), 
            aes_string(x = "eda", y = "value", group = colname, color = colname)) +
-      geom_line() +
-      geom_point() +
+      geom_line(size = 1.4) +
+      geom_point(size = 2.6) +
       labs(title = title, y = "", x = "Edad", 
            caption = "Fuente: Elaboración propia - ENCO Julio 2022", color = "") +
       scale_y_continuous(limits=c(0,1), breaks = seq(0,1,0.25), labels = scales::percent) +
       facet_wrap(~var_stat) +
       theme_bw() +
-      theme(legend.position = "top") +
+      theme(legend.position = "top", 
+            text = element_text(size = 15),
+            plot.title = element_text(size = 24), 
+            legend.text = element_text(size = 18), 
+            strip.text.x = element_text(size = 19),
+            axis.text.x = element_text(size=11)) +
       guides(color = guide_legend(reverse=TRUE))
   
  # print(plot)
  
   ggsave(paste0("/Users/adrix-lg/Repos/blog-cheyenne/grafs/", savingdir,colname, ".png"), plot,
-         width = 15, height = 9)
+         width = 16, height = 10)
 }
 
 # Muestra 
-# plot_meanline("p14", "¿Algún miembro de este hogar o usted están planeando comprar un automóvil nuevo o usado
-# en los próximos 2 años?", compara = TRUE)
+plot_meanline("p14", "¿Algún miembro de este hogar o usted están planeando comprar un automóvil nuevo o usado
+en los próximos 2 años?", compara = FALSE)
 
 # Loop
 preguntas <- paste0("p", c(1:15))
