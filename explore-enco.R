@@ -148,7 +148,7 @@ make_data <- function(db, colname){
     group_by(eda) %>% 
     mutate(tot_etario = sum(factor, na.rm = T)) %>% 
     ungroup() %>% 
-    group_by(across(c(eda, starts_with(colname), tot_etario))) %>% 
+    group_by(across(c(eda, matches(paste0(colname, "$")), tot_etario))) %>% 
     summarise(tot_p = sum(factor, na.rm = T)) %>%
     mutate(porcentaje = round(tot_p / tot_etario, digits = 2)) %>%
     ungroup() %>% 
@@ -210,9 +210,9 @@ en los próximos 2 años?", compara = FALSE)
 
 # Loop
 preguntas <- paste0("p", c(1:15))
-titulos <- c("¿Cómo describiría usted su situación económica comparada con la de hace 12 meses?",
+titulos <- c("¿Cómo describiría su situación económica comparada con la de hace 12 meses?",
              "¿Cómo cree que será su situación económica en 12 meses respecto a la actual?",
-             "¿Cómo cree que es su situación en este momento comparada hace 12 meses?",
+             "¿Cómo cree que es la situación de los miembros de este hogar\nen este momento comparada hace 12 meses?",
              "¿Cómo será la situación económica de los miembros de este hogar en 12 meses?",
              "¿Cómo considera la situación económica del país hoy respecto a la de hace 12 meses?",
              "¿Cuál será la condición económica del país en 12 meses?",
