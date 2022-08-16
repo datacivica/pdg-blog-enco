@@ -161,28 +161,10 @@ make_data <- function(db, colname){
                              "Porcentaje promedio acumulado"))
 }
 
-# Testing 
-
-# test <- make_data(clean_cuestbas, "p14") 
-#   
-# 
-# ggplot(test %>% dplyr::filter(get("p14") != "No sabe",
-#                               get("var_stat") == "Porcentaje promedio acumulado"),
-#        aes_string(x = "eda", y = "value", group = "p14", color = "p14")) +
-#   geom_line() +
-#   geom_point() +
-#   labs(title = "title", y = paste0("Porcentaje","promedio acumulado"), x = "Edad", 
-#        caption = "Fuente: Elaboración propia - ENCO Julio 2022", color = "") +
-#   scale_y_continuous(limits=c(0,1), breaks = seq(0,1,0.25), labels = scales::percent) +
-#   facet_wrap(~var_stat) +
-#   theme_bw() +
-#   theme(legend.position = "top") +
-#   guides(color = guide_legend(reverse=TRUE))
-
 # 2.- Función general para visualización sencilla y wrappeada
 
-plot_meanline <- function(colname, title, compara){
-  db <- make_data(clean_cuestbas, colname)
+plot_meanline <- function(db, colname, title, compara){
+  db <- make_data(db, colname)
   
   if(compara == TRUE){
     wrapvars <- c("Porcentaje", "Porcentaje promedio acumulado")
@@ -219,11 +201,11 @@ plot_meanline <- function(colname, title, compara){
  # print(plot)
  
   ggsave(paste0("/Users/adrix-lg/Repos/blog-cheyenne/grafs/", savingdir,colname, ".png"), plot,
-         width = 16, height = 10)
+  width = 16, height = 10)
 }
 
 # Muestra 
-plot_meanline("p14", "¿Algún miembro de este hogar o usted están planeando comprar un automóvil nuevo o usado
+plot_meanline(clean_cuestbas, "p14", "¿Algún miembro de este hogar o usted están planeando comprar un automóvil nuevo o usado
 en los próximos 2 años?", compara = FALSE)
 
 # Loop
@@ -247,8 +229,8 @@ titulos <- c("¿Cómo describiría usted su situación económica comparada con 
 
 pb <- txtProgressBar(min = 1, max = length(preguntas), style = 3)
 for (i in 1:length(preguntas)){
-  plot_meanline(preguntas[i], titulos[i], compara = TRUE)
-  plot_meanline(preguntas[i], titulos[i], compara = FALSE)
+  plot_meanline(clean_cuestbas, preguntas[i], titulos[i], compara = TRUE)
+  plot_meanline(clean_cuestbas, preguntas[i], titulos[i], compara = FALSE)
   
   setTxtProgressBar(pb, i)
 }
