@@ -41,19 +41,17 @@ if(sum(socioec$fac_p18) == sum(cuestbas$factor)){
 
 clean_socioec <- socioec %>% 
   unite("id", per:n_ren) %>% 
-  select(id, sex, eda)
+  select(id, sex, eda, upm)
 
 rm(socioec)
 
-# Decodifcación de respuestas del cuestionario básico:
+# Decodificación de respuestas del cuestionario básico:
 
 r1_6 <- function(x){
   case_when(
-    x == 1 ~ "Mucho mejor", 
-    x == 2 ~ "Mejor" ,
+    x <= 2 ~ "Mejor o mucho mejor", 
     x == 3 ~ "Igual",
-    x == 4 ~ "Peor",
-    x == 5 ~  "Mucho peor",
+    x <= 5 ~ "Peor o mucho peor",
     x == 6 ~ "No sabe",
     T ~ "check decoding")
 }
@@ -143,6 +141,7 @@ r14_15 <- function(x){
     T ~ "check decoding")
 }
 
+# Procesamos
 
 clean_cuestbas <- cuestbas %>% 
   unite("id", per:n_ren) %>% 
