@@ -11,8 +11,8 @@ pacman::p_load(tidyverse, foreign, janitor, data.table,
 
 # Archivero
 files <- list(
-    socioec = here("raw/microdatos_enco_jul22/encocs_0722.DBF"),
-    cuestbas = here("raw/microdatos_enco_jul22/encocb_0722.DBF"),
+    socioec = here("input/microdatos_enco_jul22/encocs_0722.DBF"),
+    cuestbas = here("input/microdatos_enco_jul22/encocb_0722.DBF"),
     clean_cuestbas = here("clean/clean-cuestbas.rds")
     )
 
