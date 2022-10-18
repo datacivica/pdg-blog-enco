@@ -22,8 +22,8 @@ files <- list(clean_cuestbas = here("clean/clean-cuestbas.rds"),
               graf_aspiraciones_general = here("grafs/blog/general-aspiraciones.jpg"),
               graf_aspiraciones_edades = here("grafs/blog/aspiraciones-edades.jpg"),
               graf_ahorro = here("grafs/blog/ahorro.jpg"),
-              graf_expectativas = here("grafs/blog/expectativas.jpg")
-              )
+              graf_expectativas = here("grafs/blog/expectativas.jpg"),
+              graf_ahorro_tipos = here("grafs/blog/ahorro-tipo.jpg"))
 
 # Tema gráfico
 loadfonts(quiet = T)
@@ -249,3 +249,32 @@ ggplot(tempo, aes(x = grupo_edad, y = mean, group = respuesta, fill = respuesta)
         legend.text = element_text(size = 16))
 
 ggsave(files$graf_expectativas, width = 16, height = 10)
+
+# Ahorros general
+tempo <- mk_data_noage(clean_cuestbas %>% filter(p14 == "No"), "p10")  %>% 
+  mutate(p ="p14") %>% 
+  bind_rows(., mk_data_noage(clean_cuestbas %>% filter(p15 == "No"), "p10")%>%  mutate(p ="p15")) %>%
+  bind_rows(., mk_data_noage(clean_cuestbas %>% filter(p9 == "No"), "p10") %>%  mutate(p="p9")) %>% 
+  bind_rows(., mk_data_noage(clean_cuestbas, "p10") %>% mutate(p="p10")) %>% 
+  filter(respuesta %in% c("Sí", "No"))  %>% 
+  mutate(etiqueta = factor(p,
+                           levels = c("p10", "p14", "p15", "p9"),
+                           labels = c("Población en general", "Personas que no piensan comprar un coche",
+                                      "Personas que no piensan comprar, remodelar o construir una casa",
+                                      "Personas que no piensan salir de vacaciones")))
+
+
+ggplot(tempo, aes(x = fct_rev(etiqueta), y = mean, group = respuesta, fill = respuesta)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = paste0(c(as.character(round(mean, digits = 2)*100)), "%")),
+            family = "Roboto Slab", size = 6, color =  "black",
+            position = position_dodge(width = 1), hjust = -.25) +
+  coord_flip(ylim = c(0, 0.90)) +
+  scale_fill_manual(values = c("#9BE8E6", "#CFA6F2")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(title =  "¿Qué porcentaje de personas en México afirma\npoder ahorrar una parte de sus ingresos?",
+       subtitle = "Porcentajes por tipo de expectativas", y = "", x = "", 
+       caption = "Fuente: Elaboración propia - ENCO Septiembre 2022") +
+  adrix_theme 
+  
+ggsave(files$graf_ahorro_tipos, width = 16, height = 10)
