@@ -207,21 +207,20 @@ ggplot(tempo, aes(x = grupo_edad, y = mean, group = pregunta, color = pregunta, 
 ggsave(files$graf_ahorro, width = 16, height = 10)
 
 
-# Grafs expectativas global
+# Grafs expectativas 
 
-tempo <- mk_data_intervalos(clean_cuestbas, "p2")  %>% 
-  bind_rows(mk_data_intervalos(clean_cuestbas, "p4")) %>% 
-  bind_rows(mk_data_intervalos(clean_cuestbas, "p6")) %>% 
-  filter(respuesta != "No sabe") %>% 
+tempo <- mk_data_intervalos(clean_cuestbas %>% filter(p2 != "No sabe"), "p2")  %>% 
+  bind_rows(mk_data_intervalos(clean_cuestbas %>% filter(p4 != "No sabe"), "p4")) %>% 
+  bind_rows(mk_data_intervalos(clean_cuestbas %>% filter(p6 != "No sabe"), "p6")) %>% 
   mutate(pregunta = case_when(
            pregunta == "p2" ~ "Su situación económica personal",
            pregunta == "p4" ~ "La situación económica de los\notros miembros de su hogar",
            pregunta == "p6" ~ "La situación económica del país"),
          respuesta = case_when(
-           respuesta == "Peor o mucho peor" ~ "Será peor o mucho peor",
-           respuesta == "Mejor o mucho mejor" ~ "Será mejor o mucho mejor",
+           respuesta == "Peor o mucho peor" ~ "Será peor o\nmucho peor",
+           respuesta == "Mejor o mucho mejor" ~ "Será mejor o\nmucho mejor",
            respuesta == "Igual" ~ "Será igual")) %>% 
-  mutate(respuesta = factor(respuesta, levels = c("Será peor o mucho peor", "Será igual", "Será mejor o mucho mejor")),
+  mutate(respuesta = factor(respuesta, levels = c("Será peor o\nmucho peor", "Será igual", "Será mejor o\nmucho mejor")),
          pregunta = factor(pregunta, levels = c("Su situación económica personal",
                                                 "La situación económica de los\notros miembros de su hogar", 
                                                 "La situación económica del país")))
@@ -231,7 +230,6 @@ ggplot(tempo, aes(x = grupo_edad, y = mean, group = respuesta, fill = respuesta)
   geom_col(color = "black") +
   geom_text(aes(label = paste0(c(as.character(round(mean, digits = 2)*100)), "%")),
                   family = "Roboto Slab", color =  "white", size = 6, position = position_stack(vjust = 0.5)) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
   scale_x_discrete(guide = guide_axis(n.dodge=2))+
   facet_wrap(~ pregunta, ncol = 3) +
   scale_fill_manual(values = c("blueviolet", "#CFA6F2", "aquamarine3")) +
@@ -239,9 +237,11 @@ ggplot(tempo, aes(x = grupo_edad, y = mean, group = respuesta, fill = respuesta)
        subtitle = "Porcentajes por grupo edad", y = "", x = "Grupo de edad", 
        caption = "Fuente: Elaboración propia - ENCO Septiembre 2022") +
   adrix_theme +
-  guides(fill = guide_legend(reverse = TRUE)) +
-  theme(legend.position = "top",
+  # guides(fill = guide_legend(reverse = TRUE)) +
+  theme(legend.position = "right",
         legend.title = element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
         axis.text.x = element_text(size = 15),
         plot.subtitle = element_text(margin = unit(c(0.5,0,0.75,0), "cm")),
         axis.title.x = element_text(margin = unit(c(0.75,0,0.5,0), "cm")))
