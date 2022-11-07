@@ -6,7 +6,8 @@
 rm(list = ls())
 
 if(!require(pacman)){install.packages("pacman")}
-p_load(tidyverse, data.table, here, cumstats, scales, srvyr, extrafont, ggrepel)
+p_load(tidyverse, data.table, here, cumstats, 
+       scales, srvyr, extrafont, ggrepel, svglite)
 
 # Archiveros 
 ifelse(!dir.exists(file.path(here("grafs"))),
@@ -19,11 +20,11 @@ ifelse(!dir.exists(file.path(here("grafs/blog"))),
 
 
 files <- list(clean_cuestbas = here("clean/clean-cuestbas.rds"),
-              graf_aspiraciones_general = here("grafs/blog/general-aspiraciones.jpg"),
-              graf_aspiraciones_edades = here("grafs/blog/aspiraciones-edades.jpg"),
-              graf_ahorro = here("grafs/blog/ahorro.jpg"),
-              graf_expectativas = here("grafs/blog/expectativas.jpg"),
-              graf_ahorro_tipos = here("grafs/blog/ahorro-tipo.jpg"))
+              graf_aspiraciones_general = here("grafs/blog/general-aspiraciones.svg"),
+              graf_aspiraciones_edades = here("grafs/blog/aspiraciones-edades.svg"),
+              graf_ahorro = here("grafs/blog/ahorro.svg"),
+              graf_expectativas = here("grafs/blog/expectativas.svg"),
+              graf_ahorro_tipos = here("grafs/blog/ahorro-tipo.svg"))
 
 # Tema gráfico
 loadfonts(quiet = T)
